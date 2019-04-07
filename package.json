@@ -1,0 +1,14 @@
+{
+  "name": "neon-vigcoin",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "author": "calidion <calidion@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "neon-cli": "^0.2.0"
+  },
+  "scripts": {
+    "install": "neon build"
+  }
+}
