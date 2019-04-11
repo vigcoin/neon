@@ -6,6 +6,11 @@ use cryptonote_wallet::{Wallet};
 
 use neon::prelude::*;
 
+#[no_mangle]
+pub extern fn __cxa_pure_virtual() {
+    loop{};
+}
+
 declare_types! {
     /// JS class wrapping Employee records.
     pub class JsWallet for Wallet {

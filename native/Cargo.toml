@@ -15,4 +15,4 @@ neon-build = "0.2.0"
 
 [dependencies]
 neon = "0.2.0"
-cryptonote-wallet = "0.1.0"
+cryptonote-wallet = "0.1.3"
