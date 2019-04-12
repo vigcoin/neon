@@ -29,12 +29,10 @@ before_install:
 
 install:
   - npm install
-  - npm run build
 
 # http://docs.travis-ci.com/user/pull-requests/
 script:
   - npm test
-  - npm run lint
 
 notifications:
 email: false
