@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate neon;
 extern crate cryptonote_wallet;
+extern crate hex;
 
 use cryptonote_wallet::{Wallet};
 
@@ -22,6 +23,24 @@ declare_types! {
             wallet.load(filename, password);
 
             Ok(wallet)
+        }
+
+        method getPrivateKeys(mut cx) {
+            let js_object = JsObject::new(&mut cx);
+            let this = cx.this();
+            let keys =
+            {
+            let guard = cx.lock();
+            let wallet = this.borrow(& guard);
+            (wallet.spend_keys.0, wallet.view_keys.0)
+            };
+            let spend = hex::encode(keys.0);
+            let view = hex::encode(keys.1);
+            let spend_str = cx.string(spend);
+            let view_str = cx.string(view);
+            js_object.set(&mut cx, "spend", spend_str)?;
+            js_object.set(&mut cx, "view", view_str)?;
+            Ok(js_object.upcast())
         }
 
         method save(mut cx) {
