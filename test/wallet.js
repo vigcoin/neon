@@ -47,4 +47,14 @@ describe("Test Wallet", () => {
     assert(errored);
   });
 
+
+  it("should create Wallet from none", function () {
+    let wallet = new Wallet("", "");
+    let object = wallet.create(0x3d);
+    console.log(object);
+    assert(object.spend);
+    assert(object.view);
+    assert(object.address);
+  });
+
 });

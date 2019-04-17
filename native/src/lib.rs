@@ -20,9 +20,28 @@ declare_types! {
             let password = cx.argument::<JsString>(1)?.value();
 
             let mut wallet = Wallet::new();
-            wallet.load(filename, password);
+            if filename.len() > 0 {
+              wallet.load(filename, password);
+            }
 
             Ok(wallet)
+        }
+
+        method create(mut cx) {
+            let prefix = cx.argument::<JsNumber>(0)?.value() as u64;
+            let js_object = JsObject::new(&mut cx);
+            let wallet = Wallet::create();
+            let address = wallet.to_address(prefix);
+            let keys = (wallet.spend_keys.0, wallet.view_keys.0);
+            let spend = hex::encode(keys.0);
+            let view = hex::encode(keys.1);
+            let spend_str = cx.string(spend);
+            let view_str = cx.string(view);
+            let address_str = cx.string(address.get());
+            js_object.set(&mut cx, "spend", spend_str)?;
+            js_object.set(&mut cx, "view", view_str)?;
+            js_object.set(&mut cx, "address", address_str)?;
+            Ok(js_object.upcast())
         }
 
         method getPrivateKeys(mut cx) {
