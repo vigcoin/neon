@@ -44,6 +44,20 @@ declare_types! {
             Ok(js_object.upcast())
         }
 
+        method setPrivateKeys(mut cx) {
+            let prefix = cx.argument::<JsNumber>(0)?.value() as u64;
+            let spend = cx.argument::<JsString>(1)?.value();
+            let view = cx.argument::<JsString>(2)?.value();
+            let js_object = JsObject::new(&mut cx);
+            let mut this = cx.this();
+            {
+            let guard = cx.lock();
+            let mut wallet = this.borrow_mut(& guard);
+            wallet.update_secret_keys(spend, view);
+            };
+            Ok(cx.undefined().upcast())
+        }
+
         method getPrivateKeys(mut cx) {
             let js_object = JsObject::new(&mut cx);
             let this = cx.this();

@@ -1,6 +1,6 @@
 [package]
 name = "neon-vigcoin"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["calidion <calidion@gmail.com>"]
 license = "GPL-3.0-or-later"
 build = "build.rs"
@@ -15,5 +15,5 @@ neon-build = "0.2.0"
 
 [dependencies]
 neon = "0.2.0"
-cryptonote-wallet = "0.1.5"
+cryptonote-wallet = "0.1.6"
 hex = "0.3.2"
