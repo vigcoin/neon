@@ -16,4 +16,5 @@ neon-build = "0.2.0"
 [dependencies]
 neon = "0.2.0"
 cryptonote-wallet = "0.1.6"
+cryptonote-raw-crypto = "0.1.5"
 hex = "0.3.2"

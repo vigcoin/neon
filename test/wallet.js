@@ -3,8 +3,7 @@ let path = require("path");
 let assert = require("assert");
 
 let Wallet = vigcoin.Wallet;
-
-let keys;
+let getFastHash = vigcoin.getFastHash;
 
 describe("Test Wallet", () => {
   it("should create Wallet", function () {
@@ -12,7 +11,6 @@ describe("Test Wallet", () => {
     let wallet = new Wallet(file, "");
     let address = wallet.toAddress(0x3d);
     keys = wallet.getPrivateKeys();
-    console.log(wallet.getPrivateKeys());
     assert(address == "BFrj6s15vg47Za5ipA46m8CjV59nsEeeNSSozZzs9WEo759Prf3zXke4caP22RESH5Yj2GJubQ6WPCDBR78MX3myNaHsWME");
 
     let output = path.resolve(__dirname, "vig-new.wallet");
@@ -54,7 +52,6 @@ describe("Test Wallet", () => {
   it("should create Wallet from none", function () {
     let wallet = new Wallet("", "");
     let object = wallet.create(0x3d);
-    console.log(object);
     assert(object.spend);
     assert(object.view);
     assert(object.address);
@@ -68,9 +65,24 @@ describe("Test Wallet", () => {
     '95a27c683df6a73bfc238d78fc55f414c699735d60fad4e3a999806763cb340d');
 
     let address = wallet.toAddress(0x3d);
-    let keys2 = wallet.getPrivateKeys();
-    console.log(wallet.getPrivateKeys());
     assert(address == "BFrj6s15vg47Za5ipA46m8CjV59nsEeeNSSozZzs9WEo759Prf3zXke4caP22RESH5Yj2GJubQ6WPCDBR78MX3myNaHsWME");
   });
+
+  it("should get fast hash", function () {
+    let input = [
+      0x01, 0x3c, 0x01, 0xff, 0x00, 0x01, 0x01, 0x02, 0x9b, 0x2e, 0x4c, 0x02, 0x81, 0xc0, 0xb0,
+      0x2e, 0x7c, 0x53, 0x29, 0x1a, 0x94, 0xd1, 0xd0, 0xcb, 0xff, 0x88, 0x83, 0xf8, 0x02, 0x4f,
+      0x51, 0x42, 0xee, 0x49, 0x4f, 0xfb, 0xbd, 0x08, 0x80, 0x71, 0x21, 0x01, 0xa9, 0xa4, 0x56,
+      0x9f, 0x7e, 0x10, 0x16, 0x4a, 0x32, 0x32, 0x4b, 0x2b, 0x87, 0x8a, 0xe3, 0x2d, 0x98, 0xbe,
+      0x09, 0x49, 0xce, 0x6e, 0x01, 0x50, 0xba, 0x1d, 0x7e, 0x54, 0xd6, 0x09, 0x69, 0xe5,
+    ];
+    let hash = getFastHash(Buffer.from(input));
+    hash = Buffer.from(hash, 'hex');
+    hash.equals(Buffer.from([
+      81, 131, 30, 137, 17, 68, 149, 122, 23, 4, 105, 195, 35, 123, 221, 255, 230, 192, 96, 73,
+      129, 38, 117, 210, 237, 178, 168, 52, 82, 247, 162, 80
+    ]));
+  });
+
 
 });

@@ -1,15 +1,31 @@
 #[macro_use]
 extern crate neon;
 extern crate cryptonote_wallet;
+extern crate cryptonote_raw_crypto;
 extern crate hex;
 
 use cryptonote_wallet::{Wallet};
-
+use cryptonote_raw_crypto::fast_hash;
 use neon::prelude::*;
+use std::fmt::Write;
 
 #[no_mangle]
 pub extern fn __cxa_pure_virtual() {
     loop{};
+}
+
+fn get_fast_hash(mut cx: FunctionContext) -> JsResult<JsString> {
+    let mut b: Handle<JsBuffer> = cx.argument(0)?;
+    let data = cx.borrow(&mut b, |data| {
+      let slice = data.as_slice::<u8>();
+      slice
+    });
+    let hash = fast_hash(data);
+    let mut s = String::new();
+    for &byte in hash.iter() {
+        write!(&mut s, "{:x}", byte).expect("Unable to write");
+    }
+    Ok(cx.string(s))
 }
 
 declare_types! {
@@ -104,5 +120,6 @@ declare_types! {
 
 register_module!(mut cx, {
     cx.export_class::<JsWallet>("Wallet")?;
+    cx.export_function("getFastHash", get_fast_hash);
     Ok(())
 });
