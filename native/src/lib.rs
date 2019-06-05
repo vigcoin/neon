@@ -23,7 +23,7 @@ fn get_fast_hash(mut cx: FunctionContext) -> JsResult<JsString> {
     let hash = fast_hash(data);
     let mut s = String::new();
     for &byte in hash.iter() {
-        write!(&mut s, "{:x}", byte).expect("Unable to write");
+        write!(&mut s, "{:02x}", byte).expect("Unable to write");
     }
     Ok(cx.string(s))
 }
