@@ -5,7 +5,7 @@ extern crate cryptonote_raw_crypto;
 extern crate hex;
 
 use cryptonote_wallet::{Wallet};
-use cryptonote_raw_crypto::fast_hash;
+use cryptonote_raw_crypto::{fast_hash, is_key};
 use neon::prelude::*;
 use std::fmt::Write;
 
@@ -28,6 +28,16 @@ fn get_fast_hash(mut cx: FunctionContext) -> JsResult<JsString> {
     Ok(cx.string(s))
 }
 
+fn is_public_key(mut cx: FunctionContext) -> JsResult<JsBoolean> {
+    let mut b: Handle<JsBuffer> = cx.argument(0)?;
+    let data = cx.borrow(&mut b, |data| {
+      let slice = data.as_slice::<u8>();
+      slice
+    });
+    let key = is_key(data);
+    Ok(cx.boolean(key))
+}
+
 declare_types! {
     /// JS class wrapping Employee records.
     pub class JsWallet for Wallet {
@@ -39,7 +49,6 @@ declare_types! {
             if filename.len() > 0 {
               wallet.load(filename, password);
             }
-
             Ok(wallet)
         }
 
@@ -121,5 +130,6 @@ declare_types! {
 register_module!(mut cx, {
     cx.export_class::<JsWallet>("Wallet")?;
     cx.export_function("getFastHash", get_fast_hash);
+    cx.export_function("isPublicKey", is_public_key);
     Ok(())
 });

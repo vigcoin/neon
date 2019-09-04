@@ -4,16 +4,17 @@ let assert = require("assert");
 
 let Wallet = vigcoin.Wallet;
 let getFastHash = vigcoin.getFastHash;
+let isPublicKey = vigcoin.isPublicKey;
 
 describe("Test Wallet", () => {
-  it("should create Wallet", function() {
+  it("should create Wallet", function () {
     let file = path.resolve(__dirname, "./vig.wallet");
     let wallet = new Wallet(file, "");
     let address = wallet.toAddress(0x3d);
     keys = wallet.getPrivateKeys();
     assert(
       address ==
-        "BFrj6s15vg47Za5ipA46m8CjV59nsEeeNSSozZzs9WEo759Prf3zXke4caP22RESH5Yj2GJubQ6WPCDBR78MX3myNaHsWME"
+      "BFrj6s15vg47Za5ipA46m8CjV59nsEeeNSSozZzs9WEo759Prf3zXke4caP22RESH5Yj2GJubQ6WPCDBR78MX3myNaHsWME"
     );
 
     let output = path.resolve(__dirname, "vig-new.wallet");
@@ -24,11 +25,11 @@ describe("Test Wallet", () => {
     let address1 = wallet1.toAddress(0x3d);
     assert(
       address1 ==
-        "BFrj6s15vg47Za5ipA46m8CjV59nsEeeNSSozZzs9WEo759Prf3zXke4caP22RESH5Yj2GJubQ6WPCDBR78MX3myNaHsWME"
+      "BFrj6s15vg47Za5ipA46m8CjV59nsEeeNSSozZzs9WEo759Prf3zXke4caP22RESH5Yj2GJubQ6WPCDBR78MX3myNaHsWME"
     );
   });
 
-  it("should catch error file not found", function() {
+  it("should catch error file not found", function () {
     let file = path.resolve(__dirname, "./vig.wallet");
     let errored = false;
     try {
@@ -40,7 +41,7 @@ describe("Test Wallet", () => {
     assert(errored);
   });
 
-  it("should catch wrong password error", function() {
+  it("should catch wrong password error", function () {
     let file = path.resolve(__dirname, "./vig.wallet");
     let errored = false;
     try {
@@ -52,7 +53,7 @@ describe("Test Wallet", () => {
     assert(errored);
   });
 
-  it("should create Wallet from none", function() {
+  it("should create Wallet from none", function () {
     let wallet = new Wallet("", "");
     let object = wallet.create(0x3d);
     assert(object.spend);
@@ -60,7 +61,7 @@ describe("Test Wallet", () => {
     assert(object.address);
   });
 
-  it("should import Wallet from keys", function() {
+  it("should import Wallet from keys", function () {
     let wallet = new Wallet("", "");
     let keys1 = wallet.getPrivateKeys();
 
@@ -73,11 +74,11 @@ describe("Test Wallet", () => {
     let address = wallet.toAddress(0x3d);
     assert(
       address ==
-        "BFrj6s15vg47Za5ipA46m8CjV59nsEeeNSSozZzs9WEo759Prf3zXke4caP22RESH5Yj2GJubQ6WPCDBR78MX3myNaHsWME"
+      "BFrj6s15vg47Za5ipA46m8CjV59nsEeeNSSozZzs9WEo759Prf3zXke4caP22RESH5Yj2GJubQ6WPCDBR78MX3myNaHsWME"
     );
   });
 
-  it("should get fast hash", function() {
+  it("should get fast hash", function () {
     let hash = getFastHash(Buffer.from([1]));
     assert(hash.length === 64);
 
@@ -197,5 +198,13 @@ describe("Test Wallet", () => {
       80
     ]);
     hash.equals(temp);
+  });
+
+  it("should check public key", () => {
+    const key = Buffer.from([
+      81, 76, 248, 201, 237, 192, 109, 39, 58, 159, 67, 13, 120, 203, 91, 70, 36, 216, 162,
+      222, 0, 100, 243, 152, 32, 48, 89, 129, 252, 169, 180, 36
+    ]);
+    assert(isPublicKey(key));
   });
 });
