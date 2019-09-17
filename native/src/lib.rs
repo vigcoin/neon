@@ -5,7 +5,7 @@ extern crate cryptonote_raw_crypto;
 extern crate hex;
 
 use cryptonote_wallet::{Wallet};
-use cryptonote_raw_crypto::{fast_hash, is_key};
+use cryptonote_raw_crypto::{hash::Hash, key::Key};
 use neon::prelude::*;
 use std::fmt::Write;
 
@@ -20,7 +20,7 @@ fn get_fast_hash(mut cx: FunctionContext) -> JsResult<JsString> {
       let slice = data.as_slice::<u8>();
       slice
     });
-    let hash = fast_hash(data);
+    let hash = Hash::fast(data);
     let mut s = String::new();
     for &byte in hash.iter() {
         write!(&mut s, "{:02x}", byte).expect("Unable to write");
@@ -34,7 +34,11 @@ fn is_public_key(mut cx: FunctionContext) -> JsResult<JsBoolean> {
       let slice = data.as_slice::<u8>();
       slice
     });
-    let key = is_key(data);
+    let mut fixed_data : [u8; 32] = [0; 32];
+    for i in 0..32 {
+        fixed_data[i] = data[i];
+    }
+    let key = Key::check_public_key(&fixed_data);
     Ok(cx.boolean(key))
 }
 
@@ -70,10 +74,8 @@ declare_types! {
         }
 
         method setPrivateKeys(mut cx) {
-            let prefix = cx.argument::<JsNumber>(0)?.value() as u64;
-            let spend = cx.argument::<JsString>(1)?.value();
-            let view = cx.argument::<JsString>(2)?.value();
-            let js_object = JsObject::new(&mut cx);
+            let spend = cx.argument::<JsString>(0)?.value();
+            let view = cx.argument::<JsString>(1)?.value();
             let mut this = cx.this();
             {
             let guard = cx.lock();
@@ -129,7 +131,7 @@ declare_types! {
 
 register_module!(mut cx, {
     cx.export_class::<JsWallet>("Wallet")?;
-    cx.export_function("getFastHash", get_fast_hash);
-    cx.export_function("isPublicKey", is_public_key);
+    cx.export_function("getFastHash", get_fast_hash)?;
+    cx.export_function("isPublicKey", is_public_key)?;
     Ok(())
 });

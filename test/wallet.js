@@ -66,7 +66,6 @@ describe("Test Wallet", () => {
     let keys1 = wallet.getPrivateKeys();
 
     wallet.setPrivateKeys(
-      0x3d,
       "32e4e5f72797c2fc0e2dda4e80e61bd0093934a305af08c9d3b942715844aa08",
       "95a27c683df6a73bfc238d78fc55f414c699735d60fad4e3a999806763cb340d"
     );
