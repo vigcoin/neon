@@ -5,13 +5,35 @@ extern crate cryptonote_raw_crypto;
 extern crate hex;
 
 use cryptonote_wallet::{Wallet};
-use cryptonote_raw_crypto::{hash::Hash, key::Key};
+use cryptonote_raw_crypto::{hash::Hash, key::Key, ring::Ring};
 use neon::prelude::*;
 use std::fmt::Write;
 
 #[no_mangle]
 pub extern fn __cxa_pure_virtual() {
     loop{};
+}
+
+fn get_buffer(cx: &mut neon::context::CallContext<'_, neon::types::JsObject>, idx: i32) -> Vec<u8>{
+    let mut b: Handle<JsBuffer> = cx.argument(idx).expect("Fail to get argument!");
+    let data = cx.borrow(&mut b, |data| {
+      let slice = data.as_slice::<u8>();
+      slice
+    });
+    let mut buffer: Vec<u8> = vec![];
+    for i in 0..data.len() {
+        buffer.push(data[i]);
+    }
+    buffer
+}
+
+fn get_hash(cx: &mut neon::context::CallContext<'_, neon::types::JsObject>, idx: i32) -> [u8; 32]{
+    let data = get_buffer(cx, idx);
+    let mut fixed_data : [u8; 32] = [0; 32];
+    for i in 0..32 {
+        fixed_data[i] = data[i];
+    }
+    fixed_data
 }
 
 fn get_fast_hash(mut cx: FunctionContext) -> JsResult<JsString> {
@@ -29,18 +51,25 @@ fn get_fast_hash(mut cx: FunctionContext) -> JsResult<JsString> {
 }
 
 fn is_public_key(mut cx: FunctionContext) -> JsResult<JsBoolean> {
-    let mut b: Handle<JsBuffer> = cx.argument(0)?;
-    let data = cx.borrow(&mut b, |data| {
-      let slice = data.as_slice::<u8>();
-      slice
-    });
-    let mut fixed_data : [u8; 32] = [0; 32];
-    for i in 0..32 {
-        fixed_data[i] = data[i];
-    }
-    let key = Key::check_public_key(&fixed_data);
-    Ok(cx.boolean(key))
+    let key = get_hash(&mut cx, 0);
+    let is_key = Key::check_public_key(&key);
+    Ok(cx.boolean(is_key))
 }
+/*
+pub fn check_signature(
+    prefix_hash: &[u8; 32],
+    image: &[u8; 32],
+    pubs: &Vec<[u8; 32]>,
+    pubs_count: usize,
+    signatures: &Vec<u8>
+) -> bool
+*/
+// fn check_ring_signature(mut cx: FunctionContext) -> JsResult<JsBoolean> {
+//     let prefix_hash = get_hash(&mut cx, 0);
+//     let image = get_hash(&mut cx, 1);
+//     let key = Ring::check_signature(&prefix_hash, &image,);
+//     Ok(cx.boolean(key))
+// }
 
 declare_types! {
     /// JS class wrapping Employee records.
