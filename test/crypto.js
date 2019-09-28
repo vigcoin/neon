@@ -3,8 +3,7 @@ let path = require("path");
 const lineByLine = require('n-readlines');
 let assert = require("assert");
 let Scalar = vigcoin.Scalar;
-
-
+let Key = vigcoin.Key;
 
 describe("Test Crypto", () => {
   it("should check crypto", function () {
@@ -49,6 +48,15 @@ describe("Test Crypto", () => {
             let expected = Buffer.from(divs[2], 'hex');
             assert(hash.equals(expected));
           }
+          break;
+
+        case 'generate_keys': {
+          const publicKey = Buffer.from(divs[1], "hex");
+          const secretKey = Buffer.from(divs[2], "hex");
+          const keys = Key.generateKeys();
+          assert(publicKey.equals(keys.public));
+          assert(secretKey.equals(keys.secret));
+        }
           break;
       }
       // console.log(divs);

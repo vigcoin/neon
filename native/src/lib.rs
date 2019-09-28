@@ -6,9 +6,11 @@ extern crate hex;
 
 mod util;
 mod scalar;
+mod key;
 
 use util::{*};
 use scalar::{*};
+use key::{*};
 
 use cryptonote_wallet::{Wallet};
 use cryptonote_raw_crypto::{hash::Hash, key::Key, ring::Ring};
@@ -155,5 +157,6 @@ register_module!(mut cx, {
     cx.export_function("setupRandom", init_random)?;
     cx.export_function("randomScalar", random_scalar)?;
     cx.export_function("hashToScalar", hash_to_scalar)?;
+    cx.export_function("generateKeys", generate_keys)?;
     Ok(())
 });
