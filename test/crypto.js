@@ -65,30 +65,33 @@ describe("Test Crypto", () => {
           assert(Key.check(publicKey) === expected);
         }
           break;
-          case 'secret_key_to_public_key': {
-            const secretKey = Buffer.from(divs[1], "hex");
-            const expected1 = divs[2] === 'true';
-            const publicKey = Key.secretToPublic(secretKey);
-            if (expected1) {
-              const expected2 = Buffer.from(divs[3], "hex");
-              assert(publicKey.equals(expected2));
-            } else {
-              assert(publicKey.equals(Buffer.alloc(32)));
-            }
-
-            // let secret_key = hex::decode(split[1]).expect("Error parse expected");
-            // let expected1 = split[2] == "true";
-            // let mut public_key: [u8; 32] = [0; 32];
-            // let actual1 = Key::secret_to_public(&to_fixed_32(secret_key), &mut public_key);
-            // assert!(expected1 == actual1);
-            // if expected1 == true {
-            //   let expected2 = hex::decode(split[3]).expect("Error parse expected");
-            //   assert!(public_key == expected2.as_slice());
-            // }
+        case 'secret_key_to_public_key': {
+          const secretKey = Buffer.from(divs[1], "hex");
+          const expected1 = divs[2] === 'true';
+          const publicKey = Key.secretToPublic(secretKey);
+          if (expected1) {
+            const expected2 = Buffer.from(divs[3], "hex");
+            assert(publicKey.equals(expected2));
+          } else {
+            assert(publicKey.equals(Buffer.alloc(32)));
           }
+        }
           break;
+        case 'generate_key_derivation': {
+          const publicKey = Buffer.from(divs[1], "hex");
+          const secretKey = Buffer.from(divs[2], "hex");
+          const expected1 = divs[3] === 'true';
+
+          const derived = Key.derivate(publicKey, secretKey);
+
+          if (expected1) {
+            const expected2 = Buffer.from(divs[4], "hex");
+            assert(derived.equals(expected2));
+          } else {
+            assert(derived.equals(Buffer.alloc(32)));
+          }
+        }
       }
-      // console.log(divs);
     }
   });
 });
