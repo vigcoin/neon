@@ -26,3 +26,19 @@ pub fn check_key(mut cx: FunctionContext) -> JsResult<JsBoolean> {
     let hash = get_hash(&mut cx, 0);
     Ok(cx.boolean(Key::check_public_key(&hash)))
 }
+
+pub fn secret_key_to_public_key(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
+  let secret_key = get_hash(&mut cx, 0);
+  let mut public_key: [u8;32] = [0;32];
+  let result = Key::secret_to_public(&secret_key, &mut public_key);
+  let mut buffer = JsArrayBuffer::new(&mut cx, 32)?;
+  if result {
+    cx.borrow_mut(&mut buffer, |data| {
+      let slice = data.as_mut_slice();
+      for i in 0..32 {
+        slice[i] = public_key[i];
+      }
+    });
+  }
+  Ok(buffer)
+}

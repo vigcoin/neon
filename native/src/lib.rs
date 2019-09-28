@@ -159,5 +159,6 @@ register_module!(mut cx, {
     cx.export_function("hashToScalar", hash_to_scalar)?;
     cx.export_function("generateKeys", generate_keys)?;
     cx.export_function("checkKey", check_key)?;
+    cx.export_function("secretKeyToPublicKey", secret_key_to_public_key)?;
     Ok(())
 });
