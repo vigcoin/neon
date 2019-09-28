@@ -13,6 +13,7 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "mocha": "^6.1.4"
+    "mocha": "^6.1.4",
+    "n-readlines": "^1.0.0"
   }
 }

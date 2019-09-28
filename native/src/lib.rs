@@ -4,6 +4,12 @@ extern crate cryptonote_wallet;
 extern crate cryptonote_raw_crypto;
 extern crate hex;
 
+mod util;
+mod scalar;
+
+use util::{*};
+use scalar::{*};
+
 use cryptonote_wallet::{Wallet};
 use cryptonote_raw_crypto::{hash::Hash, key::Key, ring::Ring};
 use neon::prelude::*;
@@ -12,28 +18,6 @@ use std::fmt::Write;
 #[no_mangle]
 pub extern fn __cxa_pure_virtual() {
     loop{};
-}
-
-fn get_buffer(cx: &mut neon::context::CallContext<'_, neon::types::JsObject>, idx: i32) -> Vec<u8>{
-    let mut b: Handle<JsBuffer> = cx.argument(idx).expect("Fail to get argument!");
-    let data = cx.borrow(&mut b, |data| {
-      let slice = data.as_slice::<u8>();
-      slice
-    });
-    let mut buffer: Vec<u8> = vec![];
-    for i in 0..data.len() {
-        buffer.push(data[i]);
-    }
-    buffer
-}
-
-fn get_hash(cx: &mut neon::context::CallContext<'_, neon::types::JsObject>, idx: i32) -> [u8; 32]{
-    let data = get_buffer(cx, idx);
-    let mut fixed_data : [u8; 32] = [0; 32];
-    for i in 0..32 {
-        fixed_data[i] = data[i];
-    }
-    fixed_data
 }
 
 fn get_fast_hash(mut cx: FunctionContext) -> JsResult<JsString> {
@@ -64,12 +48,17 @@ pub fn check_signature(
     signatures: &Vec<u8>
 ) -> bool
 */
-// fn check_ring_signature(mut cx: FunctionContext) -> JsResult<JsBoolean> {
-//     let prefix_hash = get_hash(&mut cx, 0);
-//     let image = get_hash(&mut cx, 1);
-//     let key = Ring::check_signature(&prefix_hash, &image,);
-//     Ok(cx.boolean(key))
-// }
+fn check_ring_signature(mut cx: FunctionContext) -> JsResult<JsBoolean> {
+    let prefix_hash = get_hash(&mut cx, 0);
+    let image = get_hash(&mut cx, 1);
+    let ba: Handle<JsArray> = cx.argument::<JsArray>(2).expect("Fail to parse Array!");
+    let vec: Vec<Handle<JsValue>> = ba.to_vec(&mut cx).expect("Fail to parse vec!");
+    let pubs = to_buffer_array(&mut cx, &vec);
+    let pubs_count = cx.argument::<JsNumber>(0)?.value();
+    let signatures = get_buffer(&mut cx, 4);
+    let key = Ring::check_signature(&prefix_hash, &image, &pubs, pubs_count as usize, &signatures);
+    Ok(cx.boolean(key))
+}
 
 declare_types! {
     /// JS class wrapping Employee records.
@@ -162,5 +151,9 @@ register_module!(mut cx, {
     cx.export_class::<JsWallet>("Wallet")?;
     cx.export_function("getFastHash", get_fast_hash)?;
     cx.export_function("isPublicKey", is_public_key)?;
+    cx.export_function("isScalar", is_scalar)?;
+    cx.export_function("setupRandom", init_random)?;
+    cx.export_function("randomScalar", random_scalar)?;
+    cx.export_function("hashToScalar", hash_to_scalar)?;
     Ok(())
 });
