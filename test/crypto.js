@@ -58,6 +58,13 @@ describe("Test Crypto", () => {
           assert(secretKey.equals(keys.secret));
         }
           break;
+        case 'check_key': {
+          const publicKey = Buffer.from(divs[1], "hex");
+          assert(publicKey.length === 32);
+          let expected = divs[2] === "true";
+          assert(Key.check(publicKey) === expected);
+        }
+          break;
       }
       // console.log(divs);
     }

@@ -1,6 +1,6 @@
 use cryptonote_raw_crypto::{key::Key};
 use neon::prelude::*;
-// use util::*;
+use util::*;
 
 
 pub fn generate_keys(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
@@ -19,4 +19,10 @@ pub fn generate_keys(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
       }
     });
     Ok(buffer)
+}
+
+
+pub fn check_key(mut cx: FunctionContext) -> JsResult<JsBoolean> {
+    let hash = get_hash(&mut cx, 0);
+    Ok(cx.boolean(Key::check_public_key(&hash)))
 }

@@ -158,5 +158,6 @@ register_module!(mut cx, {
     cx.export_function("randomScalar", random_scalar)?;
     cx.export_function("hashToScalar", hash_to_scalar)?;
     cx.export_function("generateKeys", generate_keys)?;
+    cx.export_function("checkKey", check_key)?;
     Ok(())
 });
