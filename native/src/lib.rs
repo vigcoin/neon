@@ -23,32 +23,6 @@ pub extern fn __cxa_pure_virtual() {
     loop{};
 }
 
-// fn is_public_key(mut cx: FunctionContext) -> JsResult<JsBoolean> {
-//     let key = get_hash(&mut cx, 0);
-//     let is_key = Key::check_public_key(&key);
-//     Ok(cx.boolean(is_key))
-// }
-/*
-pub fn check_signature(
-    prefix_hash: &[u8; 32],
-    image: &[u8; 32],
-    pubs: &Vec<[u8; 32]>,
-    pubs_count: usize,
-    signatures: &Vec<u8>
-) -> bool
-*/
-// fn check_ring_signature(mut cx: FunctionContext) -> JsResult<JsBoolean> {
-//     let prefix_hash = get_hash(&mut cx, 0);
-//     let image = get_hash(&mut cx, 1);
-//     let ba: Handle<JsArray> = cx.argument::<JsArray>(2).expect("Fail to parse Array!");
-//     let vec: Vec<Handle<JsValue>> = ba.to_vec(&mut cx).expect("Fail to parse vec!");
-//     let pubs = to_buffer_array(&mut cx, &vec);
-//     let pubs_count = cx.argument::<JsNumber>(0)?.value();
-//     let signatures = get_buffer(&mut cx, 4);
-//     let key = Ring::check_signature(&prefix_hash, &image, &pubs, pubs_count as usize, &signatures);
-//     Ok(cx.boolean(key))
-// }
-
 declare_types! {
     /// JS class wrapping Employee records.
     pub class JsWallet for Wallet {
@@ -156,5 +130,6 @@ register_module!(mut cx, {
     cx.export_function("hashToEC", hash_to_ec)?;
     cx.export_function("generateKeyImage", generate_key_image)?;
     cx.export_function("generateRingSignature", generate_ring_signature)?;
+    cx.export_function("checkRingSignature", check_ring_signature)?;
     Ok(())
 });

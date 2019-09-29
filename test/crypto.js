@@ -188,31 +188,23 @@ describe("Test Crypto", () => {
             prefixHash, image, pubsv, pubsCount, secretKey, secretKeyIndex
           );
           assert(actual.equals(expected));
-
-          // let prefix_hash = hex::decode(split[1]).expect("Error parse prefix hash");
-          // let image = hex::decode(split[2]).expect("Error parse key image");
-          // let pubs_count = split[3].parse::<usize>().unwrap();
-
-          // let mut pubsv: Vec<[u8; 32]> = vec![];
-          // for i in 0..pubs_count {
-          //   let public_key = hex::decode(split[(4 + i)]).expect("Error parse public key");
-          //   let fixed = to_fixed_32(public_key);
-          //   pubsv.push(fixed);
-          // }
-          // let secret_key = hex::decode(split[(4 + pubs_count)]).expect("Error parse secret key");
-          // let secret_index = split[(5 + pubs_count)].parse::<usize>().unwrap();
-          // let expected = hex::decode(split[(6 + pubs_count)]).expect("Error parse signatures");
-          // let actual = Ring::generate_signature(
-          //   &to_fixed_32(prefix_hash),
-          //   &to_fixed_32(image),
-          //   &pubsv,
-          //   pubs_count,
-          //   &to_fixed_32(secret_key),
-          //   secret_index,
-          // );
-          // assert!(expected == actual);
         }
         break;
+        case 'check_ring_signature': {
+          let prefixHash = Buffer.from(divs[1], "hex");
+          let image = Buffer.from(divs[2], "hex");
+          let pubsCount = parseInt(divs[3], 10);
+          let pubsv = [];
+          for(let i = 0; i < pubsCount; i++) {
+            pubsv.push(Buffer.from(divs[4 + i], 'hex'));
+          }
+          let signatures = Buffer.from(divs[4 + pubsCount], "hex");
+          let expected = divs[5 + pubsCount] === 'true';
+          let actual = Signature.checkRing(
+            prefixHash, image, pubsv, pubsCount, signatures
+          );
+          assert(actual === expected);
+        }
       }
     }
   });

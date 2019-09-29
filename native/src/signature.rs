@@ -34,20 +34,6 @@ pub fn check_signature(mut cx: FunctionContext) -> JsResult<JsBoolean> {
     Ok(cx.boolean(check))
 }
 
-
-pub fn check_ring_signature(mut cx: FunctionContext) -> JsResult<JsBoolean> {
-    let prefix_hash = get_hash(&mut cx, 0);
-    let image = get_hash(&mut cx, 1);
-    let ba: Handle<JsArray> = cx.argument::<JsArray>(2).expect("Fail to parse Array!");
-    let vec: Vec<Handle<JsValue>> = ba.to_vec(&mut cx).expect("Fail to parse vec!");
-    let pubs = to_buffer_array(&mut cx, &vec);
-    let pubs_count = cx.argument::<JsNumber>(0)?.value();
-    let signatures = get_buffer(&mut cx, 4);
-    let key = Ring::check_signature(&prefix_hash, &image, &pubs, pubs_count as usize, &signatures);
-    Ok(cx.boolean(key))
-}
-
-
 pub fn generate_ring_signature(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
     let prefix_hash = get_hash(&mut cx, 0);
     let image = get_hash(&mut cx, 1);
@@ -76,6 +62,18 @@ pub fn generate_ring_signature(mut cx: FunctionContext) -> JsResult<JsArrayBuffe
       }
     });
     Ok(buffer)
+}
+
+pub fn check_ring_signature(mut cx: FunctionContext) -> JsResult<JsBoolean> {
+    let prefix_hash = get_hash(&mut cx, 0);
+    let image = get_hash(&mut cx, 1);
+    let ba: Handle<JsArray> = cx.argument::<JsArray>(2).expect("Fail to parse Array!");
+    let vec: Vec<Handle<JsValue>> = ba.to_vec(&mut cx).expect("Fail to parse vec!");
+    let pubs = to_buffer_array(&mut cx, &vec);
+    let pubs_count = cx.argument::<JsNumber>(3)?.value();
+    let signatures = get_buffer(&mut cx, 4);
+    let key = Ring::check_signature(&prefix_hash, &image, &pubs, pubs_count as usize, &signatures);
+    Ok(cx.boolean(key))
 }
 
 
