@@ -156,6 +156,13 @@ describe("Test Crypto", () => {
           let actual = Scalar.toPoint(hash);
           assert(actual.equals(expected));
         }
+        break;
+        case 'hash_to_ec': {
+          let hash = Buffer.from(divs[1], "hex");
+          let expected = Buffer.from(divs[2], "hex");
+          let actual = Scalar.fromHash(hash);
+          assert(actual.equals(expected));
+        }
       }
     }
   });

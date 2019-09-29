@@ -63,3 +63,16 @@ pub fn hash_to_point(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
     });
     Ok(buffer)
 }
+
+pub fn hash_to_ec(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
+    let hash = get_hash(&mut cx, 0);
+    let scalar = EllipticCurveScalar::from_hash(&hash);
+    let mut buffer = JsArrayBuffer::new(&mut cx, 32)?;
+    cx.borrow_mut(&mut buffer, |data| {
+      let slice = data.as_mut_slice();
+      for i in 0..32 {
+        slice[i] = scalar[i];
+      }
+    });
+    Ok(buffer)
+}
