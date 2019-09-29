@@ -4,6 +4,7 @@ const lineByLine = require('n-readlines');
 let assert = require("assert");
 let Scalar = vigcoin.Scalar;
 let Key = vigcoin.Key;
+let Signature = vigcoin.Signature;
 
 describe("Test Crypto", () => {
   it("should check crypto", function () {
@@ -131,6 +132,14 @@ describe("Test Crypto", () => {
           }
         }
           break;
+        case 'generate_signature': {
+          let prefixHash = Buffer.from(divs[1], "hex");
+          let publicKey = Buffer.from(divs[2], "hex");
+          let secretKey = Buffer.from(divs[3], "hex");
+          let expected = Buffer.from(divs[4], "hex");
+          let actual = Signature.generate(prefixHash, publicKey, secretKey);
+          assert(actual.equals(expected));
+        }
       }
     }
   });

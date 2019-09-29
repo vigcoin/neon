@@ -7,10 +7,12 @@ extern crate hex;
 mod util;
 mod scalar;
 mod key;
+mod signature;
 
 use util::{*};
 use scalar::{*};
 use key::{*};
+use signature::{*};
 
 use cryptonote_wallet::{Wallet};
 use cryptonote_raw_crypto::{hash::Hash, key::Key, ring::Ring};
@@ -164,5 +166,6 @@ register_module!(mut cx, {
     cx.export_function("derivePublicKey", derive_public_key)?;
     cx.export_function("deriveSecretKey", derive_secret_key)?;
     cx.export_function("underivePublicKey", underive_public_key)?;
+    cx.export_function("generateSignature", generate_signature)?;
     Ok(())
 });
