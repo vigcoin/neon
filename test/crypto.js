@@ -8,6 +8,7 @@ let Signature = vigcoin.Signature;
 
 describe("Test Crypto", () => {
   it("should check crypto", function () {
+    this.timeout(50000);
     const file = path.resolve(__dirname, "./tests.txt");
     const liner = new lineByLine(file);
     let line;
@@ -171,6 +172,47 @@ describe("Test Crypto", () => {
           let actual = Key.generateImage(publicKey, secretKey);
           assert(actual.equals(expected));
         }
+        break;
+        case 'generate_ring_signature': {
+          let prefixHash = Buffer.from(divs[1], "hex");
+          let image = Buffer.from(divs[2], "hex");
+          let pubsCount = parseInt(divs[3], 10);
+          let pubsv = [];
+          for(let i = 0; i < pubsCount; i++) {
+            pubsv.push(Buffer.from(divs[4 + i], 'hex'));
+          }
+          let secretKey = Buffer.from(divs[4 + pubsCount], "hex");
+          let secretKeyIndex = parseInt(divs[5 + pubsCount], 10);
+          let expected = Buffer.from(divs[6 + pubsCount], "hex");
+          let actual = Signature.generateRing(
+            prefixHash, image, pubsv, pubsCount, secretKey, secretKeyIndex
+          );
+          assert(actual.equals(expected));
+
+          // let prefix_hash = hex::decode(split[1]).expect("Error parse prefix hash");
+          // let image = hex::decode(split[2]).expect("Error parse key image");
+          // let pubs_count = split[3].parse::<usize>().unwrap();
+
+          // let mut pubsv: Vec<[u8; 32]> = vec![];
+          // for i in 0..pubs_count {
+          //   let public_key = hex::decode(split[(4 + i)]).expect("Error parse public key");
+          //   let fixed = to_fixed_32(public_key);
+          //   pubsv.push(fixed);
+          // }
+          // let secret_key = hex::decode(split[(4 + pubs_count)]).expect("Error parse secret key");
+          // let secret_index = split[(5 + pubs_count)].parse::<usize>().unwrap();
+          // let expected = hex::decode(split[(6 + pubs_count)]).expect("Error parse signatures");
+          // let actual = Ring::generate_signature(
+          //   &to_fixed_32(prefix_hash),
+          //   &to_fixed_32(image),
+          //   &pubsv,
+          //   pubs_count,
+          //   &to_fixed_32(secret_key),
+          //   secret_index,
+          // );
+          // assert!(expected == actual);
+        }
+        break;
       }
     }
   });
