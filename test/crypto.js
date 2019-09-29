@@ -106,6 +106,16 @@ describe("Test Crypto", () => {
           }
         }
           break;
+        case 'derive_secret_key': {
+
+          let derivation = Buffer.from(divs[1], "hex");
+          let index = parseInt(divs[2]);
+          let secretKey = Buffer.from(divs[3], "hex");
+          let derived = Key.deriveSecretKey(derivation, secretKey, index);
+          let expected = Buffer.from(divs[4], "hex");
+          assert(derived.equals(expected));
+        }
+          break;
       }
     }
   });

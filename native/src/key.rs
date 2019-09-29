@@ -76,4 +76,21 @@ pub fn derive_public_key(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
 }
 
 
+pub fn derive_secret_key(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
+  let derivation = get_hash(&mut cx, 0);
+  let secret_key = get_hash(&mut cx, 1);
+  let out_index = cx.argument::<JsNumber>(2)?.value();
+  let derived = Key::derive_secret_key(&derivation, out_index as u64, &secret_key);
+
+  let mut buffer = JsArrayBuffer::new(&mut cx, 32)?;
+    cx.borrow_mut(&mut buffer, |data| {
+      let slice = data.as_mut_slice();
+      for i in 0..32 {
+        slice[i] = derived[i];
+      }
+    });
+  Ok(buffer)
+}
+
+
 
