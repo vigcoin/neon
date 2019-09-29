@@ -116,6 +116,21 @@ describe("Test Crypto", () => {
           assert(derived.equals(expected));
         }
           break;
+        case 'underive_public_key': {
+
+          let derivation = Buffer.from(divs[1], "hex");
+          let index = parseInt(divs[2]);
+          let publicKey = Buffer.from(divs[3], "hex");
+          const expected1 = divs[4] === 'true';
+          let derived = Key.underivePublicKey(derivation, publicKey, index);
+          if (expected1) {
+            let expected2 = Buffer.from(divs[5], "hex");
+            assert(derived.equals(expected2));
+          } else {
+            assert(derived.equals(Buffer.alloc(32)));
+          }
+        }
+          break;
       }
     }
   });

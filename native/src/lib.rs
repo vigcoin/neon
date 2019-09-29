@@ -163,5 +163,6 @@ register_module!(mut cx, {
     cx.export_function("generateKeyDerivation", generate_key_derivation)?;
     cx.export_function("derivePublicKey", derive_public_key)?;
     cx.export_function("deriveSecretKey", derive_secret_key)?;
+    cx.export_function("underivePublicKey", underive_public_key)?;
     Ok(())
 });
