@@ -156,5 +156,6 @@ register_module!(mut cx, {
     cx.export_function("checkSignature", check_signature)?;
     cx.export_function("hashToPoint", hash_to_point)?;
     cx.export_function("hashToEC", hash_to_ec)?;
+    cx.export_function("generateKeyImage", generate_key_image)?;
     Ok(())
 });

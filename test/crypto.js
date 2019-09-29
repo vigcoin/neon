@@ -156,11 +156,19 @@ describe("Test Crypto", () => {
           let actual = Scalar.toPoint(hash);
           assert(actual.equals(expected));
         }
-        break;
+          break;
         case 'hash_to_ec': {
           let hash = Buffer.from(divs[1], "hex");
           let expected = Buffer.from(divs[2], "hex");
           let actual = Scalar.fromHash(hash);
+          assert(actual.equals(expected));
+        }
+          break;
+        case 'generate_key_image': {
+          let publicKey = Buffer.from(divs[1], "hex");
+          let secretKey = Buffer.from(divs[2], "hex");
+          let expected = Buffer.from(divs[3], "hex");
+          let actual = Key.generateImage(publicKey, secretKey);
           assert(actual.equals(expected));
         }
       }

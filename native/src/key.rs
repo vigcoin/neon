@@ -109,4 +109,18 @@ pub fn underive_public_key(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
   Ok(buffer)
 }
 
+pub fn generate_key_image(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
+  let public_key = get_hash(&mut cx, 0);
+  let secret_key = get_hash(&mut cx, 1);
+  let image = Key::generate_key_image(&public_key, &secret_key);
+
+  let mut buffer = JsArrayBuffer::new(&mut cx, 32)?;
+    cx.borrow_mut(&mut buffer, |data| {
+      let slice = data.as_mut_slice();
+      for i in 0..32 {
+        slice[i] = image[i];
+      }
+    });
+  Ok(buffer)
+}
 
