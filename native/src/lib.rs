@@ -167,5 +167,6 @@ register_module!(mut cx, {
     cx.export_function("deriveSecretKey", derive_secret_key)?;
     cx.export_function("underivePublicKey", underive_public_key)?;
     cx.export_function("generateSignature", generate_signature)?;
+    cx.export_function("checkSignature", check_signature)?;
     Ok(())
 });

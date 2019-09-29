@@ -8,6 +8,14 @@ pub fn get_u8_32_array(data: &Vec<u8>) -> [u8; 32] {
     fixed_data
 }
 
+pub fn get_u8_64_array(data: &Vec<u8>) -> [u8; 64] {
+    let mut fixed_data : [u8; 64] = [0; 64];
+    for i in 0..64 {
+        fixed_data[i] = data[i];
+    }
+    fixed_data
+}
+
 pub fn get_buffer(cx: &mut neon::context::CallContext<'_, neon::types::JsObject>, idx: i32) -> Vec<u8>{
     let mut b: Handle<JsBuffer> = cx.argument(idx).expect("Fail to get argument!");
     let data = cx.borrow(&mut b, |data| {
@@ -49,4 +57,9 @@ pub fn to_buffer_array(cx: &mut neon::context::CallContext<'_, neon::types::JsOb
 pub fn get_hash(cx: &mut neon::context::CallContext<'_, neon::types::JsObject>, idx: i32) -> [u8; 32]{
     let data = get_buffer(cx, idx);
     get_u8_32_array(&data)
+}
+
+pub fn get_signature(cx: &mut neon::context::CallContext<'_, neon::types::JsObject>, idx: i32) -> [u8; 64]{
+    let data = get_buffer(cx, idx);
+    get_u8_64_array(&data)
 }

@@ -140,6 +140,17 @@ describe("Test Crypto", () => {
           let actual = Signature.generate(prefixHash, publicKey, secretKey);
           assert(actual.equals(expected));
         }
+          break;
+        case 'check_signature': {
+
+          let prefixHash = Buffer.from(divs[1], "hex");
+          let publicKey = Buffer.from(divs[2], "hex");
+          let signature = Buffer.from(divs[3], "hex");
+          const expected = divs[4] === 'true';
+
+          let actual = Signature.check(prefixHash, publicKey, signature);
+          assert(expected === actual);
+        }
       }
     }
   });
