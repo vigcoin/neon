@@ -23,7 +23,6 @@ pub fn generate_signature(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
 }
 
 pub fn check_signature(mut cx: FunctionContext) -> JsResult<JsBoolean> {
-
     let prefix_hash = get_hash(&mut cx, 0);
     let public_key = get_hash(&mut cx, 1);
     let signature = get_signature(&mut cx, 2);

@@ -8,41 +8,28 @@ mod util;
 mod scalar;
 mod key;
 mod signature;
+mod hash;
 
 use util::{*};
 use scalar::{*};
 use key::{*};
 use signature::{*};
+use hash::{*};
 
 use cryptonote_wallet::{Wallet};
-use cryptonote_raw_crypto::{hash::Hash, key::Key, ring::Ring};
+use cryptonote_raw_crypto::{ring::Ring};
 use neon::prelude::*;
-use std::fmt::Write;
 
 #[no_mangle]
 pub extern fn __cxa_pure_virtual() {
     loop{};
 }
 
-fn get_fast_hash(mut cx: FunctionContext) -> JsResult<JsString> {
-    let mut b: Handle<JsBuffer> = cx.argument(0)?;
-    let data = cx.borrow(&mut b, |data| {
-      let slice = data.as_slice::<u8>();
-      slice
-    });
-    let hash = Hash::fast(data);
-    let mut s = String::new();
-    for &byte in hash.iter() {
-        write!(&mut s, "{:02x}", byte).expect("Unable to write");
-    }
-    Ok(cx.string(s))
-}
-
-fn is_public_key(mut cx: FunctionContext) -> JsResult<JsBoolean> {
-    let key = get_hash(&mut cx, 0);
-    let is_key = Key::check_public_key(&key);
-    Ok(cx.boolean(is_key))
-}
+// fn is_public_key(mut cx: FunctionContext) -> JsResult<JsBoolean> {
+//     let key = get_hash(&mut cx, 0);
+//     let is_key = Key::check_public_key(&key);
+//     Ok(cx.boolean(is_key))
+// }
 /*
 pub fn check_signature(
     prefix_hash: &[u8; 32],
@@ -154,7 +141,6 @@ declare_types! {
 register_module!(mut cx, {
     cx.export_class::<JsWallet>("Wallet")?;
     cx.export_function("getFastHash", get_fast_hash)?;
-    cx.export_function("isPublicKey", is_public_key)?;
     cx.export_function("isScalar", is_scalar)?;
     cx.export_function("setupRandom", init_random)?;
     cx.export_function("randomScalar", random_scalar)?;
@@ -168,5 +154,6 @@ register_module!(mut cx, {
     cx.export_function("underivePublicKey", underive_public_key)?;
     cx.export_function("generateSignature", generate_signature)?;
     cx.export_function("checkSignature", check_signature)?;
+    cx.export_function("hashToPoint", hash_to_point)?;
     Ok(())
 });

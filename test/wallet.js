@@ -3,8 +3,9 @@ let path = require("path");
 let assert = require("assert");
 
 let Wallet = vigcoin.Wallet;
-let getFastHash = vigcoin.getFastHash;
-let isPublicKey = vigcoin.isPublicKey;
+// let getFastHash = vigcoin.getFastHash;
+let Key = vigcoin.Key;
+let Hash = vigcoin.Hash;
 
 describe("Test Wallet", () => {
   it("should create Wallet", function () {
@@ -78,10 +79,10 @@ describe("Test Wallet", () => {
   });
 
   it("should get fast hash", function () {
-    let hash = getFastHash(Buffer.from([1]));
+    let hash = Hash.fast(Buffer.from([1]));
     assert(hash.length === 64);
 
-    hash = getFastHash(Buffer.from([2]));
+    hash = Hash.fast(Buffer.from([2]));
     assert(hash.length === 64);
     let input = [
       0x01,
@@ -159,7 +160,7 @@ describe("Test Wallet", () => {
       0x69,
       0xe5
     ];
-    hash = getFastHash(Buffer.from(input));
+    hash = Hash.fast(Buffer.from(input));
     assert(hash.length === 64);
     hash = Buffer.from(hash, "hex");
     const temp = Buffer.from([
@@ -204,6 +205,6 @@ describe("Test Wallet", () => {
       81, 76, 248, 201, 237, 192, 109, 39, 58, 159, 67, 13, 120, 203, 91, 70, 36, 216, 162,
       222, 0, 100, 243, 152, 32, 48, 89, 129, 252, 169, 180, 36
     ]);
-    assert(isPublicKey(key));
+    assert(Key.check(key));
   });
 });

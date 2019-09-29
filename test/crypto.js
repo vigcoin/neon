@@ -108,7 +108,6 @@ describe("Test Crypto", () => {
         }
           break;
         case 'derive_secret_key': {
-
           let derivation = Buffer.from(divs[1], "hex");
           let index = parseInt(divs[2]);
           let secretKey = Buffer.from(divs[3], "hex");
@@ -118,7 +117,6 @@ describe("Test Crypto", () => {
         }
           break;
         case 'underive_public_key': {
-
           let derivation = Buffer.from(divs[1], "hex");
           let index = parseInt(divs[2]);
           let publicKey = Buffer.from(divs[3], "hex");
@@ -150,6 +148,13 @@ describe("Test Crypto", () => {
 
           let actual = Signature.check(prefixHash, publicKey, signature);
           assert(expected === actual);
+        }
+          break;
+        case 'hash_to_point': {
+          let hash = Buffer.from(divs[1], "hex");
+          let expected = Buffer.from(divs[2], "hex");
+          let actual = Scalar.toPoint(hash);
+          assert(actual.equals(expected));
         }
       }
     }

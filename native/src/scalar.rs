@@ -1,6 +1,6 @@
 
 
-use cryptonote_raw_crypto::{scalar::EllipticCurveScalar};
+use cryptonote_raw_crypto::{scalar::EllipticCurveScalar, scalar::EllipticCurvePoint};
 use neon::prelude::*;
 
 use util::*;
@@ -46,6 +46,19 @@ pub fn hash_to_scalar(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
       let slice = data.as_mut_slice();
       for i in 0..32 {
         slice[i] = hash[i];
+      }
+    });
+    Ok(buffer)
+}
+
+pub fn hash_to_point(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
+    let hash = get_hash(&mut cx, 0);
+    let point = EllipticCurvePoint::from_hash(&hash);
+    let mut buffer = JsArrayBuffer::new(&mut cx, 32)?;
+    cx.borrow_mut(&mut buffer, |data| {
+      let slice = data.as_mut_slice();
+      for i in 0..32 {
+        slice[i] = point[i];
       }
     });
     Ok(buffer)
