@@ -19,8 +19,8 @@ pub fn get_u8_64_array(data: &Vec<u8>) -> [u8; 64] {
 pub fn get_buffer(cx: &mut neon::context::CallContext<'_, neon::types::JsObject>, idx: i32) -> Vec<u8>{
     let mut b: Handle<JsBuffer> = cx.argument(idx).expect("Fail to get argument!");
     let data = cx.borrow(&mut b, |data| {
-      let slice = data.as_slice::<u8>();
-      slice
+        let slice = data.as_slice::<u8>();
+        slice
     });
     let mut buffer: Vec<u8> = vec![];
     for i in 0..data.len() {

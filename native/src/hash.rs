@@ -5,8 +5,8 @@ use std::fmt::Write;
 pub fn get_fast_hash(mut cx: FunctionContext) -> JsResult<JsString> {
     let mut b: Handle<JsBuffer> = cx.argument(0)?;
     let data = cx.borrow(&mut b, |data| {
-      let slice = data.as_slice::<u8>();
-      slice
+        let slice = data.as_slice::<u8>();
+        slice
     });
     let hash = Hash::fast(data);
     let mut s = String::new();

@@ -5,9 +5,9 @@ use neon::prelude::*;
 
 use util::*;
 
-  extern "C" {
+extern "C" {
     fn setup_random(value: i32);
-  }
+}
 
 pub fn is_scalar(mut cx: FunctionContext) -> JsResult<JsBoolean> {
     let scalar = get_hash(&mut cx, 0);
@@ -20,7 +20,7 @@ pub fn init_random(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     let value = cx.argument::<JsNumber>(0)?.value();
 
     unsafe {
-      setup_random(value as i32);
+        setup_random(value as i32);
     }
     Ok(cx.undefined())
 }
@@ -30,10 +30,10 @@ pub fn random_scalar(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
     EllipticCurveScalar::random(&mut ec_scalar);
     let mut buffer = JsArrayBuffer::new(&mut cx, 32)?;
     cx.borrow_mut(&mut buffer, |data| {
-      let slice = data.as_mut_slice();
-      for i in 0..32 {
-        slice[i] = ec_scalar[i];
-      }
+        let slice = data.as_mut_slice();
+        for i in 0..32 {
+            slice[i] = ec_scalar[i];
+        }
     });
     Ok(buffer)
 }
@@ -43,10 +43,10 @@ pub fn hash_to_scalar(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
     let hash = EllipticCurveScalar::to_hash(&scalar);
     let mut buffer = JsArrayBuffer::new(&mut cx, 32)?;
     cx.borrow_mut(&mut buffer, |data| {
-      let slice = data.as_mut_slice();
-      for i in 0..32 {
-        slice[i] = hash[i];
-      }
+        let slice = data.as_mut_slice();
+        for i in 0..32 {
+            slice[i] = hash[i];
+        }
     });
     Ok(buffer)
 }
@@ -56,10 +56,10 @@ pub fn hash_to_point(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
     let point = EllipticCurvePoint::from_hash(&hash);
     let mut buffer = JsArrayBuffer::new(&mut cx, 32)?;
     cx.borrow_mut(&mut buffer, |data| {
-      let slice = data.as_mut_slice();
-      for i in 0..32 {
-        slice[i] = point[i];
-      }
+        let slice = data.as_mut_slice();
+        for i in 0..32 {
+            slice[i] = point[i];
+        }
     });
     Ok(buffer)
 }
@@ -69,10 +69,10 @@ pub fn hash_to_ec(mut cx: FunctionContext) -> JsResult<JsArrayBuffer> {
     let scalar = EllipticCurveScalar::from_hash(&hash);
     let mut buffer = JsArrayBuffer::new(&mut cx, 32)?;
     cx.borrow_mut(&mut buffer, |data| {
-      let slice = data.as_mut_slice();
-      for i in 0..32 {
-        slice[i] = scalar[i];
-      }
+        let slice = data.as_mut_slice();
+        for i in 0..32 {
+            slice[i] = scalar[i];
+        }
     });
     Ok(buffer)
 }

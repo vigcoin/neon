@@ -34,7 +34,7 @@ declare_types! {
 
             let mut wallet = Wallet::new();
             if filename.len() > 0 {
-              wallet.load(filename, password);
+                wallet.load(filename, password);
             }
             Ok(wallet)
         }
@@ -61,9 +61,9 @@ declare_types! {
             let view = cx.argument::<JsString>(1)?.value();
             let mut this = cx.this();
             {
-            let guard = cx.lock();
-            let mut wallet = this.borrow_mut(& guard);
-            wallet.update_secret_keys(spend, view);
+                let guard = cx.lock();
+                let mut wallet = this.borrow_mut(& guard);
+                wallet.update_secret_keys(spend, view);
             };
             Ok(cx.undefined().upcast())
         }
@@ -73,9 +73,9 @@ declare_types! {
             let this = cx.this();
             let keys =
             {
-            let guard = cx.lock();
-            let wallet = this.borrow(& guard);
-            (wallet.spend_keys.0, wallet.view_keys.0)
+                let guard = cx.lock();
+                let wallet = this.borrow(& guard);
+                (wallet.spend_keys.0, wallet.view_keys.0)
             };
             let spend = hex::encode(keys.0);
             let view = hex::encode(keys.1);
@@ -91,9 +91,9 @@ declare_types! {
             let filename = cx.argument::<JsString>(0)?.value();
             let password = cx.argument::<JsString>(1)?.value();
             {
-            let guard = cx.lock();
-            let wallet = this.borrow(&guard);
-            wallet.save(filename, password);
+                let guard = cx.lock();
+                let wallet = this.borrow(&guard);
+                wallet.save(filename, password);
             };
             Ok(cx.undefined().upcast())
         }
@@ -102,10 +102,10 @@ declare_types! {
             let this = cx.this();
             let prefix = cx.argument::<JsNumber>(0)?.value() as u64;
             let address = {
-            let guard = cx.lock();
-            let wallet = this.borrow(&guard);
-            let address = wallet.to_address(prefix);
-            address
+                let guard = cx.lock();
+                let wallet = this.borrow(&guard);
+                let address = wallet.to_address(prefix);
+                address
             };
             Ok(cx.string(address.get()).upcast())
         }
