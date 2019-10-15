@@ -8,13 +8,13 @@ exclude = ["artifacts.json", "index.node"]
 
 [lib]
 name = "neon_vigcoin"
-crate-type = ["dylib"]
+crate-type = ["cdylib"]
 
 [build-dependencies]
-neon-build = "0.2.0"
+neon-build = "0.3.1"
 
 [dependencies]
-neon = "0.2.0"
+neon = "0.3.1"
 cryptonote-wallet = "0.2.0"
 cryptonote-raw-crypto = "0.5.4"
 hex = "0.3.2"
