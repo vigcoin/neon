@@ -9,11 +9,13 @@ mod scalar;
 mod key;
 mod signature;
 mod hash;
+mod difficulty;
 
 use scalar::{*};
 use key::{*};
 use signature::{*};
 use hash::{*};
+use difficulty::{*};
 
 use cryptonote_wallet::{Wallet};
 use neon::prelude::*;
@@ -24,7 +26,7 @@ pub extern fn __cxa_pure_virtual() {
 }
 
 declare_types! {
-    /// JS class wrapping Employee records.
+    /// JS class wrapping Wallet functions
     pub class JsWallet for Wallet {
         init(mut cx) {
             let filename = cx.argument::<JsString>(0)?.value();
@@ -112,6 +114,7 @@ declare_types! {
 
 register_module!(mut cx, {
     cx.export_class::<JsWallet>("Wallet")?;
+    cx.export_class::<JsDifficulty>("Difficulty")?;
     cx.export_function("getFastHash", get_fast_hash)?;
     cx.export_function("isScalar", is_scalar)?;
     cx.export_function("setupRandom", init_random)?;
