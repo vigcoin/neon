@@ -38,4 +38,11 @@ describe("Test Hash", () => {
       assert(expected.equals(Buffer.from(Hash.slow(plain, 0), 'hex')));
     }
   });
+
+  it("should test check hash", function () {
+    assert(Hash.check(Buffer.from([
+      0, 223, 74, 253, 65, 221, 188, 172, 253, 50, 122, 246, 173, 212, 162, 103, 13, 174, 254,
+      199, 175, 49, 254, 177, 181, 91, 56, 9, 98, 1, 0, 0
+    ]), 10343869));
+  });
 });

@@ -117,6 +117,7 @@ register_module!(mut cx, {
     cx.export_class::<JsDifficulty>("Difficulty")?;
     cx.export_function("getFastHash", get_fast_hash)?;
     cx.export_function("getSlowHash", get_slow_hash)?;
+    cx.export_function("checkHash", check_with_difficulty)?;
     cx.export_function("isScalar", is_scalar)?;
     cx.export_function("setupRandom", init_random)?;
     cx.export_function("randomScalar", random_scalar)?;
