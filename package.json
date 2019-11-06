@@ -1,18 +1,18 @@
 {
   "name": "@vigcoin/neon",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "",
   "main": "lib/index.js",
   "author": "calidion <calidion@gmail.com>",
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "neon-cli": "^0.2.0"
   },
   "scripts": {
     "install": "neon build",
     "test": "mocha"
   },
   "devDependencies": {
-    "neon-cli": "^0.2.0",
     "mocha": "^6.1.4",
     "n-readlines": "^1.0.0"
   }
