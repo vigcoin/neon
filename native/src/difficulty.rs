@@ -1,5 +1,5 @@
 
-use cryptonote_raw_crypto::{*};
+use cryptonote_raw_crypto::{difficulty::Difficulty};
 use neon::prelude::*;
 
 declare_types! {

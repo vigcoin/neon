@@ -10,12 +10,14 @@ mod key;
 mod signature;
 mod hash;
 mod difficulty;
+mod amount;
 
 use scalar::{*};
 use key::{*};
 use signature::{*};
 use hash::{*};
 use difficulty::{*};
+use amount::{*};
 
 use cryptonote_wallet::{Wallet};
 use neon::prelude::*;
@@ -115,6 +117,7 @@ declare_types! {
 register_module!(mut cx, {
     cx.export_class::<JsWallet>("Wallet")?;
     cx.export_class::<JsDifficulty>("Difficulty")?;
+    cx.export_function("getPenalized", get_penalized)?;
     cx.export_function("getFastHash", get_fast_hash)?;
     cx.export_function("getSlowHash", get_slow_hash)?;
     cx.export_function("checkHash", check_with_difficulty)?;
