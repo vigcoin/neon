@@ -30,6 +30,7 @@ export declare class Hash {
   static fast(buffer: Buffer): Buffer;
   static slow(buffer: Buffer, variant: number): Buffer;
   static check(buffer: Buffer, difficulty: number): Buffer;
+  static from(buffer: Buffer): Buffer;
 }
 
 export declare class Amount {
