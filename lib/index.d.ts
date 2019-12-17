@@ -27,9 +27,9 @@ export declare class Signature {
 }
 
 export declare class Hash {
-  static fast(buffer: Buffer): Buffer;
-  static slow(buffer: Buffer, variant: number): Buffer;
-  static check(buffer: Buffer, difficulty: number): Buffer;
+  static fast(buffer: Buffer): string;
+  static slow(buffer: Buffer, variant: number): string;
+  static check(buffer: Buffer, difficulty: number): boolean;
   static from(buffer: Buffer): Buffer;
 }
 
