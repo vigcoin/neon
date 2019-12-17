@@ -36,3 +36,29 @@ export declare class Hash {
 export declare class Amount {
   static getPenalized(amount: number, medianSize: number, currentBlockSize: number): number;
 }
+
+export declare class Difficulty {
+  constructor(
+    target: number,
+    cut: number,
+    lag: number,
+    window: number
+  );
+  public next(timestamps: number[], difficulties: number[]): string;
+}
+
+export declare class Wallet {
+  constructor(
+    filename?: string,
+    password?: string
+  );
+  public create(prefix: number): { spend: string, view: string, address: string };
+  public setPrivateKeys(spend: string, view: string): void;
+  public getPrivateKeys(spend: string, view: string): { spend: string, view: string };
+  public getPrivateKeys(spend: string, view: string): { spend: string, view: string };
+  public save(
+    filename: string,
+    password: string
+  ): void;
+  public toAddress(prefix: number): string;
+}
