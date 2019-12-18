@@ -23,7 +23,7 @@ export declare class Signature {
   static check(prefixHash: Buffer, publicKey: Buffer, signature: Buffer): Buffer;
   static generateRing(prefixHash: Buffer, image: Buffer, pubsv: Buffer[], pubsCount: number, secretKey: Buffer, secretKeyIndex
     : number): Buffer;
-  static checkRing(prefixHash: Buffer, image: Buffer, pubsv: Buffer[], pubsCount: number, signatures: Buffer): Buffer;
+  static checkRing(prefixHash: Buffer, image: Buffer, pubsv: Buffer[], pubsCount: number, signatures: Buffer): boolean;
 }
 
 export declare class Hash {
