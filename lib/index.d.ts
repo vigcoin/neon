@@ -54,8 +54,7 @@ export declare class Wallet {
   );
   public create(prefix: number): { spend: string, view: string, address: string };
   public setPrivateKeys(spend: string, view: string): void;
-  public getPrivateKeys(spend: string, view: string): { spend: string, view: string };
-  public getPrivateKeys(spend: string, view: string): { spend: string, view: string };
+  public getPrivateKeys(): { spend: string, view: string };
   public save(
     filename: string,
     password: string
