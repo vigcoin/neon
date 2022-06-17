@@ -14,7 +14,7 @@ crate-type = ["cdylib"]
 neon-build = "0.3.1"
 
 [dependencies]
-neon = "0.3.1"
+neon = "0.10.1"
 cryptonote-wallet = "0.2.0"
 cryptonote-raw-crypto = "0.5.7"
 hex = "0.3.2"
